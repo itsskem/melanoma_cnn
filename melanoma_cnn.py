@@ -31,7 +31,7 @@ validset = torchvision.datasets.ImageFolder(
 )
 ##############
 validloader = torch.utils.data.DataLoader(validset, batch_size=10,
-                                         shuffle=False, num_workers=0)
+                                         shuffle=True, num_workers=0)
 
 
 

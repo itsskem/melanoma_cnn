@@ -20,7 +20,7 @@ trainset = torchvision.datasets.ImageFolder(                #loading all of the 
     transform=transformations
 )  #transforms images into a tensor
 ##############
-trainloader = torch.utils.data.DataLoader(trainset, batch_size=10,           #8 data points at a time (every time it loads)
+trainloader = torch.utils.data.DataLoader(trainset, batch_size=5,           # data points at a time (every time it loads)
                                           shuffle=True, num_workers=0)
 
 ### CHANGE ###
@@ -64,9 +64,9 @@ net = Net() #creates neural network
 import torch.optim as optim
 
 criterion = nn.CrossEntropyLoss() # cost function
-optimizer = optim.SGD(net.parameters(), lr=0.001, momentum=0.5) #gradient descent
+optimizer = optim.SGD(net.parameters(), lr=0.005, momentum=0.5) #gradient descent
 ## tensorboard --logdir=runs
-writer = SummaryWriter('runs/OT_trialrunoftransformation') #creates and labels graph for organization
+writer = SummaryWriter('runs/bsof5mof0.5lrof0.005_run2') #creates and labels graph for organization
 iterations = 1
 for epoch in range(50):  # loop over the dataset multiple times
     for i, data in enumerate(trainloader, 0): #enumerate creates trainloader into a "loopable" object #0 keeps count

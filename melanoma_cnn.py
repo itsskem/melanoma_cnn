@@ -11,7 +11,7 @@ from sklearn.metrics import accuracy_score
 data_path = 'DermMel\\train'
 transformations = transforms.Compose([
     transforms.Resize((224,224)), 
-    transforms.RandomHorizontalFlip(p=0.5),           #resizing all of the pictures
+   ## transforms.RandomHorizontalFlip(p=0.5),           #resizing all of the pictures
     torchvision.transforms.ToTensor()
     ## other transformations? such as horizonal or vertical random flips
 ])
@@ -39,7 +39,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 
-class Net(nn.Module):
+class Net(nn.Module):   #custom structure
     def __init__(self):
         super(Net, self).__init__()
         self.conv1 = nn.Conv2d(3, 6, 5)
@@ -64,9 +64,9 @@ net = Net() #creates neural network
 import torch.optim as optim
 
 criterion = nn.CrossEntropyLoss() # cost function
-optimizer = optim.SGD(net.parameters(), lr=0.005, momentum=0.5) #gradient descent
-## tensorboard --logdir=runs
-writer = SummaryWriter('runs/bsof5mof0.5lrof0.005_run2') #creates and labels graph for organization
+optimizer = optim.SGD(net.parameters(), lr=0.001, momentum=0.25) #gradient descent
+## tensorboard --logdir=actualruns
+writer = SummaryWriter('actualruns/momentum_0.25') #creates and labels graph for organization
 iterations = 1
 for epoch in range(50):  # loop over the dataset multiple times
     for i, data in enumerate(trainloader, 0): #enumerate creates trainloader into a "loopable" object #0 keeps count
@@ -85,7 +85,7 @@ for epoch in range(50):  # loop over the dataset multiple times
 
         y_true = labels.numpy()
         y_pred = torch.argmax(outputs, dim=1).numpy() # next week
-        accuracy = accuracy_score(y_true, y_pred, normalize=False)  #calculating the accuracy
+        accuracy = accuracy_score(y_true, y_pred, normalize=True)  #calculating the accuracy
         writer.add_scalar('training accuracy', accuracy, iterations)
 
         iterations += 1 #adding 1 to each iteration to help keep track
@@ -101,7 +101,7 @@ for epoch in range(50):  # loop over the dataset multiple times
             writer.add_scalar('validation loss', loss_valid, iterations)
             y_true = labels_valid.numpy()
             y_pred = torch.argmax(outputs_valid, dim=1).numpy()
-            val_accuracy = accuracy_score(y_true, y_pred, normalize=False)
+            val_accuracy = accuracy_score(y_true, y_pred, normalize=True)
             writer.add_scalar('valication accuracy',  val_accuracy, iterations)
 
             ## put the prediction error on new data into the tensorboard
